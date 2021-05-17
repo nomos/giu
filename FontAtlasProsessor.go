@@ -2,6 +2,7 @@ package giu
 
 import (
 	"fmt"
+	"github.com/nomos/go-log/log"
 	"runtime"
 	"strings"
 
@@ -19,6 +20,7 @@ var (
 
 type FontInfo struct {
 	fontName string
+	fontData []byte
 	fontPath string
 	size     float32
 }
@@ -66,6 +68,19 @@ func AddFont(fontName string, size float32) *FontInfo {
 	fi := FontInfo{
 		fontName: fontName,
 		fontPath: fontPath,
+		size:     size,
+	}
+
+	extraFonts = append(extraFonts, fi)
+
+	return &fi
+}
+
+func AddFontByMemory(fontName string,fontData []byte, size float32) *FontInfo {
+	fi := FontInfo{
+		fontName: fontName,
+		fontPath: "",
+		fontData: fontData,
 		size:     size,
 	}
 
@@ -162,8 +177,16 @@ func rebuildFontAtlas() {
 		// Add extra fonts
 		for _, fontInfo := range extraFonts {
 			// Store imgui.Font for PushFont
-			f := fonts.AddFontFromFileTTFV(fontInfo.fontPath, fontInfo.size, imgui.DefaultFontConfig, ranges.Data())
-			extraFontMap[fontInfo.String()] = &f
+			log.Warnf(fontInfo.fontPath,len(fontInfo.fontData))
+			if fontInfo.fontPath==""&&fontInfo.fontData!=nil&&len(fontInfo.fontData)>0 {
+				f := fonts.AddFontFromMemoryTTFV(fontInfo.fontData, fontInfo.size, imgui.DefaultFontConfig, ranges.Data())
+				extraFontMap[fontInfo.String()] = &f
+			} else if fontInfo.fontPath!="" {
+				f := fonts.AddFontFromFileTTFV(fontInfo.fontPath, fontInfo.size, imgui.DefaultFontConfig, ranges.Data())
+				extraFontMap[fontInfo.String()] = &f
+			} else {
+
+			}
 		}
 
 		fontTextureImg := fonts.TextureDataRGBA32()
