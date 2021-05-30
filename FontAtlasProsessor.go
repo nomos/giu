@@ -2,7 +2,6 @@ package giu
 
 import (
 	"fmt"
-	"github.com/nomos/go-log/log"
 	"runtime"
 	"strings"
 
@@ -179,7 +178,6 @@ func rebuildFontAtlas() {
 		// Add extra fonts
 		for _, fontInfo := range extraFonts {
 			// Store imgui.Font for PushFont
-			log.Warnf(fontInfo.fontPath,len(fontInfo.fontData))
 			if fontInfo.fontPath==""&&fontInfo.fontData!=nil&&len(fontInfo.fontData)>0 {
 				f := fonts.AddFontFromMemoryTTFV(fontInfo.fontData, fontInfo.size, imgui.DefaultFontConfig, ranges.Data())
 				extraFontMap[fontInfo.String()] = &f
