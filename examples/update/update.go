@@ -5,7 +5,7 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/AllenDang/giu"
+	"github.com/nomos/giu"
 )
 
 var (

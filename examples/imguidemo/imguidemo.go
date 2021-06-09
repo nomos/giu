@@ -1,7 +1,7 @@
 package main
 
 import (
-	g "github.com/AllenDang/giu"
+	g "github.com/nomos/giu"
 	"github.com/AllenDang/imgui-go"
 )
 
